@@ -1,5 +1,6 @@
 import React from 'react';
 import './App.css';
+import 'react-table/react-table.css'
 
 class App extends React.Component {
     state = {
@@ -42,20 +43,23 @@ class App extends React.Component {
 
     render() {
         const {products, product} = this.state;
+        const {name,count,price} = product;
+        let classes = 'btn  btn-lg m-5 btn-';
+        classes += !(name && price && count ) ? "info" :'basic';
         return (
             <div className='App'>
                 <div>
                     <h1> LIST OF FRUITS</h1>
-                    {products.map((this.renderProduct))}
+                    <div className='badge badge-info m-2'>
+                        {products.map((this.renderProduct))}
+                    </div>
                 </div>
-
                 <div>
                     <div>
                         <p>-name-</p>
                         <input
                         value={product.name}
-                        onChange={e => this.setState({product: {...product, name: e.target.value}})}
-                    />
+                        onChange={e => this.setState({product: {...product, name: e.target.value}})}/>
                     </div>
                     <div>
                         <p>-price-</p>
@@ -73,7 +77,7 @@ class App extends React.Component {
                         onChange={e => this.setState({product: {...product, count: e.target.value}})}
                     />
                     </div>
-                    <button onClick={this.addProduct}>Add Product</button>
+                    <button className={classes} onClick={this.addProduct}>Add Product</button>
                 </div>
             </div>
         )
