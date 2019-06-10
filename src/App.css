@@ -1,5 +1,6 @@
 .App {
   text-align: center;
+  background-color: bisque;
 }
 
 .App-logo {
@@ -31,4 +32,6 @@
     transform: rotate(360deg);
   }
 }
-
+html,body{
+  background-color: bisque;
+}
