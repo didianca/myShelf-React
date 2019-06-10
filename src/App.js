@@ -39,17 +39,16 @@ class App extends React.Component {
             this.getProducts()
         }
     };
-    renderProduct = ({id, name, price, count}) => <tr>
-        <td key={id}>{name}</td>
-        <td key={id}>{price} </td>
-        <td key={id}>{count}</td>
+    renderProduct = ({id, name, price, count}) => <tr key={id}>
+        <td >{name}</td>
+        <td >{price} </td>
+        <td >{count}</td>
     </tr>;
 
     render() {
         const {products, product} = this.state;
         return (
             <div className='App'>
-                <div>
                     <h1> LIST OF FRUITS</h1>
                     <div className='table-responsive'>
                         <table className='table  table-bordered table-hover table-sm'>
@@ -67,7 +66,6 @@ class App extends React.Component {
 
                         </table>
                     </div>
-                </div>
                 <div>
                     <div>
                         <p>-name-</p>
