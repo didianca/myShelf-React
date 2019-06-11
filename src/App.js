@@ -188,8 +188,7 @@ class App extends React.Component {
                         </div>
                     </div>
                 </div>
-                <div className='alert alert-info alert-dismissible'>
-                    <button className="close fade in" data-dismiss="alert" aria-label="close">&times;</button>
+                <div className='alert alert-info '>
                     Insert values for <strong>adding</strong> a new product or <strong>editing</strong> an existing one</div>
             </div>
 
