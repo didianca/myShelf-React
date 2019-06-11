@@ -43,18 +43,66 @@ class App extends React.Component {
             this.getProducts()
         }
     };
+    handleUpdate = async (id) => {
+        const {product} = this.state;
+        const {name, price, count} = product;
+        if (!(name && price && count)) return;
+        const headers = new Headers();
+        headers.append('Content-Type', 'application/json');
+        const options = {
+            method: 'PUT',
+            headers,
+            body: JSON.stringify(product)
+        };
+        const request = new Request(`http://localhost:4000/products/${id}`, options);
+        const response = await fetch(request);
+        let status = await response.status;
+        if (status === 200) {
+            this.getProducts()
+        }
+
+    };
+    handleDelete = async (id) => {
+        const options = {
+            method: 'DELETE'
+        };
+        const request = new Request(`http://localhost:4000/products/${id}`, options);
+        const response = await fetch(request);
+        let status = await response.status;
+        if (status === 200) {
+            this.getProducts()
+        }
+
+    };
     //setting up the table
     renderProduct = ({id, name, price, count}) => <tr key={id}>
         <td>{name}</td>
         <td>{price} </td>
         <td>{count}</td>
+        <td>
+            <button
+                type='button' className={this.getBtnClasses()}
+                onClick={() => {
+                    this.handleUpdate(id)
+                }}//update
+            >
+                <ion-icon name="create"/>
+            </button>
+            <button type='button' className='btn rounded-circle btn-outline-danger'
+                    onClick={() => {
+                        this.handleDelete(id)
+                    }}
+            >
+                <ion-icon name="trash"/>
+            </button>
+        </td>
     </tr>;
 
     //setting up btn classes for cleaner code in the render method
     getBtnClasses() {
         const {product} = this.state;
         const {name, count, price} = product;
-        let classes = 'btn  btn-lg m-5 btn-';
+        let classes = 'btn rounded-circle btn-';
         classes += (!(name && price && count)) ? "basic" : "info";
         return classes
     }
@@ -65,58 +113,84 @@ class App extends React.Component {
         return (
             <div className='App'>
                 <h1> LIST OF FRUITS</h1>
-                <div className='table-responsive'>
-                    <table className='table  table-bordered table-hover table-sm'>
-                        <caption>List of products</caption>
-                        <thead>
-                        <tr className='thead-dark'>
-                            <th>Product</th>
-                            <th>Price</th>
-                            <th>Count</th>
-                        </tr>
-                        </thead>
-                        <tbody className='table-info'>
-                        {this.state.products.length === 0 && <tr>
-                            <td> -</td>
-                            <td> -</td>
-                            <td> -</td>
-                        </tr>}
-                        {products.map((this.renderProduct))}
-                        </tbody>
+                <div className='container'>
+                    <div className='row'>
+                        <div className='col'>
+                            <div className='table-responsive'>
+                                <table className='table  table-bordered table-hover table-sm'>
+                                    <caption>List of products</caption>
+                                    <thead>
+                                    <tr className='thead-dark'>
+                                        <th>Product</th>
+                                        <th>Price</th>
+                                        <th>Count</th>
+                                        <th>Edit</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody className='table-info'>
+                                    {this.state.products.length === 0 && <tr>
+                                        <td> -</td>
+                                        <td> -</td>
+                                        <td> -</td>
+                                        <td>
+                                            <button
+                                                type='button' className={this.getBtnClasses()}
+                                                onClick={this.handleUpdate}
+                                            >
+                                                <ion-icon name="create"/>
+                                            </button>
+                                            <button type='button' className={this.getBtnClasses()}
+                                                    onClick={this.addProduct}
+                                            >
+                                                <ion-icon name="add"/>
+                                            </button>
+                                        </td>
+                                    </tr>}
+                                    {products.map((this.renderProduct))}
+                                    </tbody>
+                                </table>
 
-                    </table>
+                        </div>
+                    </div>
                 </div>
-                <div >
-                    <div className='border border-info'>
-                        <input
-                            className='form-control'
-                            placeholder='name'
-                            value={product.name}
-                            onChange={e => this.setState({product: {...product, name: e.target.value}})}/>
-                    </div>
-                    <div className='border border-info'>
-                        <input
-                            className='form-control'
-                            placeholder='price'
-                            type='number'
-                            value={product.price}
-                            onChange={e => this.setState({product: {...product, price: e.target.value}})}/>
-                    </div>
-                    <div className='border border-info'>
-                        <input
-                            className='form-control'
-                            placeholder='count'
-                            type='number'
-                            value={product.count}
-                            onChange={e => this.setState({product: {...product, count: e.target.value}})}/>
-                    </div>
+                </div>
+                <div className='container'>
+                    <div className='row'>
+                        <div className='col'>
+                            <div className='border border-info'>
+                                <input
+                                    className='form-control'
+                                    placeholder='name'
+                                    value={product.name}
+                                    onChange={e => this.setState({product: {...product, name: e.target.value}})}/>
+                            </div>
+                            <div className='border border-info'>
+                                <input
+                                    className='form-control'
+                                    placeholder='price'
+                                    type='number'
+                                    value={product.price}
+                                    onChange={e => this.setState({product: {...product, price: e.target.value}})}/>
+                            </div>
+                            <div className='border border-info'>
+                                <input
+                                    className='form-control'
+                                    placeholder='count'
+                                    type='number'
+                                    value={product.count}
+                                    onChange={e => this.setState({product: {...product, count: e.target.value}})}/>
+                            </div>
 
+                            {this.state.products.length > 0 && <button type='button' className={this.getBtnClasses()}
+                                                                       onClick={this.addProduct}
+                            >
+                                <ion-icon name="add"/></button>}
+                        </div>
+                    </div>
                 </div>
-                <button
-                    className={this.getBtnClasses()}
-                    onClick={this.addProduct}>
-                    Add Product
-                </button>
+                <div className='alert alert-info alert-dismissible'>
+                    <button className="close fade in" data-dismiss="alert" aria-label="close">&times;</button>
+                    Insert values for <strong>adding</strong> a new product or <strong>editing</strong> an existing one</div>
             </div>
 
         )
