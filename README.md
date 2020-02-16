@@ -1,3 +1,9 @@
+
+#### My-Shelf - List Application User Interface
+- build with React and Bootstrap;
+- deployed on WES EC2 using RDS;
+- you can play with it [here](http://3.16.78.232:3000/products)
+
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
 ## Available Scripts
